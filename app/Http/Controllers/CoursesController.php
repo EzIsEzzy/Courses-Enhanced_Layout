@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\User;
+use App\Models\courses;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class CoursesController extends Controller
+{
+    //
+    public function show()
+    {
+        $user = User::select('name')->from('users')->where('id','=',Auth::id())->get();
+        return view ('course.create', compact('user'));
+    }
+    public function store(Request $request)
+    {
+        courses::create(
+            [
+                'name' => $request->input('course_name'),
+                'description' => $request->input('course_description'),
+                'field' => $request->input('course_field'),
+                'duration' => $request->input('course_duration'),
+                'user_id' => Auth::id(),
+            ]
+            );
+
+            return redirect('/');
+    }
+}
