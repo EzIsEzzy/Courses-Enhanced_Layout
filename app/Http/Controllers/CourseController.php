@@ -36,6 +36,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $this->authorization();
+
         //validate info and set rules for it
         $request->validate([
             'name' => ['required', 'string'],
@@ -149,7 +150,8 @@ class CourseController extends Controller
         {
             $image = $request->file('image');
             $url = Storage::disk('public')->putFileAs('courses', $image, Str::random(10).'.'.$image->extension());
-            if($originalImage)
+            //original image => existing picture path ($course->image -> courses/default.jpg)
+            if($originalImage && $originalImage != 'courses/default.jpg')
             {
                 Storage::disk('public')->delete($originalImage);
             }
