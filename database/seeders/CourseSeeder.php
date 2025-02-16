@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\courses;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CoursesSeeder extends Seeder
+class CourseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        courses::factory(10)->create();
+        Course::factory(10)->create();
         // courses::create([
         //     'name' => 'Course 1',
         //     'description' => 'This is course 1',

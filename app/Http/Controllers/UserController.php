@@ -14,9 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $courses= courses::all()->where('user_id','=',Auth::id());
-        $user = User::select('name')->from('users')->where('id','=',Auth::id())->get();
-        return view('index', compact('user', 'courses'));
+
     }
 
     /**

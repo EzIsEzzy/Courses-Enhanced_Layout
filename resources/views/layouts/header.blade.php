@@ -52,7 +52,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             @auth
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="{{url('/')}}" class="nav-item nav-link active">Welcome, {{$user[0]->name}} </a>
+                <a href="{{url('/')}}" class="nav-item nav-link active">Welcome, {{$user->name}} </a>
             </div>
             @endauth
 
