@@ -44,6 +44,18 @@
                             </div>
                             <p class="mb-0">Image</p>
                                 <input type="file" name="image" id="" class="form-control">
+                                <br>
+                            <p class="mb-0">Select User</p>
+                                <select name="users" id="" class="form-control">
+                                    @foreach ($users as $user_info)
+                                    @if ($user_info->id == $course->user->id)
+                                    <option value="{{$user_info->id}}">{{$user_info->name}} - Current</option>
+                                    @else
+                                    <option value="{{$user_info->id}}">{{$user_info->name}}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                                <br>
                         </div>
                         <button class="btn btn-primary py-3 px-5 mt-2" type="submit">Modify Course</button>
                     </form>

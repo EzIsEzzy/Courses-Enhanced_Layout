@@ -24,6 +24,13 @@
                             <p class="mb-0"><i class="fa fa-clock text-primary me-2"></i></i><span class="text-primary">Price: </span>{{$course->price}}$</p>
                         </div>
                     </div>
+                    <h6 class="section-title bg-white text-start text-primary pe-3">About Teacher</h6>
+                    <h1 class="mb-2"> {{$teacher->name}} </h1>
+                    <div class="row gy-2 gx-4 mb-2">
+                        <div class="col-sm-5">
+                            <p class="mb-0"><i class="fa fa-user-tie text-primary me-2"></i><span class="text-primary">Role: </span>Teacher</p>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-evenly">
                         <a class="btn btn-primary py-3 px-5 mt-2" href="{{route('courses.edit',[$course->id])}}">Modify Course</a>
                         <form action="{{route('courses.destroy',[$course->id])}}" method="POST">
@@ -32,8 +39,6 @@
                             <button type="submit" class="btn btn-danger py-3 px-5 mt-2" href="">Delete Course</button>
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>

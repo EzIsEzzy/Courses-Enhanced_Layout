@@ -15,7 +15,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses= Course::where('user_id',Auth::id())->get();
+        $courses = User::find(Auth::id())->courses;
+        // $courses= Course::where('user_id',Auth::id())->get();
         $user = Auth::user();
         return view('course.index', compact('user', 'courses'));
     }
@@ -27,7 +28,8 @@ class CourseController extends Controller
     {
         $this->authorization();
         $user = Auth::user();
-        return view ('course.create', compact('user'));
+        $users = User::all(['id','name']);
+        return view ('course.create', compact('user', 'users'));
     }
 
     /**
@@ -45,6 +47,7 @@ class CourseController extends Controller
             'field' => ['required', 'string'],
             'duration' => ['required', 'numeric'],
             'image' => ['image', 'max:10000', 'mimes:png,jpg,jpeg'],
+            'users' => ['required', 'numeric'],
         ]);
         //form the array containing the data
         $data = [
@@ -53,7 +56,7 @@ class CourseController extends Controller
             'price' => $request->price,
             'duration' => $request->duration,
             'field' => $request->field,
-            'user_id' => Auth::id(),
+            'user_id' => $request->users,
         ];
         //check if the file image has been uploaded or not
         $data['image'] = $this->uploadImage($request);
@@ -71,8 +74,9 @@ class CourseController extends Controller
     {
         $this->authorization();
         $course = Course::findOrFail($id);
+        $teacher = Course::find($id)->user;
         $user = Auth::user();
-        return view ('course.show', compact('course', 'user'));
+        return view ('course.show', compact('course', 'user', 'teacher'));
     }
 
     /**
@@ -83,7 +87,8 @@ class CourseController extends Controller
         $this->authorization();
         $course = Course::findOrFail($id);
         $user = Auth::user();
-        return view ('course.edit', compact('course', 'user'));
+        $users = User::all(['id','name']);
+        return view ('course.edit', compact('course', 'user', 'users'));
     }
 
     /**
@@ -102,6 +107,7 @@ class CourseController extends Controller
             'field' => ['required', 'string'],
             'duration' => ['required', 'numeric'],
             'image' => ['image', 'max:10000', 'mimes:png,jpg,jpeg'],
+            'users' => ['required', 'numeric'],
         ]);
         //form the array containing the data
         $data = [
@@ -110,6 +116,7 @@ class CourseController extends Controller
             'price' => $request->price,
             'duration' => $request->duration,
             'field' => $request->field,
+            'user_id' => $request->users,
         ];
         //get the original course information
         $course = Course::findOrFail($id);
