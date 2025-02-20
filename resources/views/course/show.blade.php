@@ -29,6 +29,7 @@
                     <div class="row gy-2 gx-4 mb-2">
                         <div class="col-sm-5">
                             <p class="mb-0"><i class="fa fa-user-tie text-primary me-2"></i><span class="text-primary">Role: </span>Teacher</p>
+                            {{-- Hard coded until i actually add it in DB --}}
                         </div>
                     </div>
                     <div class="d-flex justify-content-evenly">

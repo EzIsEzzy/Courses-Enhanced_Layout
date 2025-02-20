@@ -15,6 +15,7 @@ class CourseController extends Controller
      */
     public function index()
     {
+        //bring all the courses for a specific user
         $courses = User::find(Auth::id())->courses;
         // $courses= Course::where('user_id',Auth::id())->get();
         $user = Auth::user();
@@ -73,8 +74,9 @@ class CourseController extends Controller
     public function show(string $id)
     {
         $this->authorization();
+        //find the course content relative to its primary key
         $course = Course::findOrFail($id);
-        $teacher = Course::find($id)->user;
+        $teacher = Course::findorFail($id)->user;
         $user = Auth::user();
         return view ('course.show', compact('course', 'user', 'teacher'));
     }
@@ -142,7 +144,7 @@ class CourseController extends Controller
         $this->authorization();
 
         //delete the image if exists
-        if ($course->image) {
+        if ($course->image && $course->image != 'courses/default.jpg') {
         Storage::disk('public')->delete($course->image);
         }
         //delete the course
