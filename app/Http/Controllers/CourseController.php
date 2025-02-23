@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,6 @@ class CourseController extends Controller
     {
         //bring all the courses for a specific user
         $courses = User::find(Auth::id())->courses;
-        // $courses= Course::where('user_id',Auth::id())->get();
         $user = Auth::user();
         return view('course.index', compact('user', 'courses'));
     }
@@ -29,6 +29,7 @@ class CourseController extends Controller
     {
         $this->authorization();
         $user = Auth::user();
+        //for fetching the data suitable for select
         $users = User::all(['id','name']);
         return view ('course.create', compact('user', 'users'));
     }
@@ -36,28 +37,18 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
         $this->authorization();
 
-        //validate info and set rules for it
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric'],
-            'field' => ['required', 'string'],
-            'duration' => ['required', 'numeric'],
-            'image' => ['image', 'max:10000', 'mimes:png,jpg,jpeg'],
-            'users' => ['required', 'numeric'],
-        ]);
         //form the array containing the data
         $data = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
+            'name' => $request->safe()->name,
+            'description' => $request->safe()->description,
+            'price' => $request->safe()->price,
             'duration' => $request->duration,
             'field' => $request->field,
-            'user_id' => $request->users,
+            'user_id' => $request->safe()->users,
         ];
         //check if the file image has been uploaded or not
         $data['image'] = $this->uploadImage($request);
@@ -96,29 +87,18 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CourseRequest $request, string $id)
     {
         //verify the action
         $this->authorization();
 
-        //validate info
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric'],
-            'field' => ['required', 'string'],
-            'duration' => ['required', 'numeric'],
-            'image' => ['image', 'max:10000', 'mimes:png,jpg,jpeg'],
-            'users' => ['required', 'numeric'],
-        ]);
-        //form the array containing the data
         $data = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'duration' => $request->duration,
-            'field' => $request->field,
-            'user_id' => $request->users,
+            'name' => $request->safe()->name,
+            'description' => $request->safe()->description,
+            'price' => $request->safe()->price,
+            'duration' => $request->safe()->duration,
+            'field' => $request->safe()->field,
+            'user_id' => $request->safe()->users,
         ];
         //get the original course information
         $course = Course::findOrFail($id);
